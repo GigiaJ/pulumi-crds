@@ -7,6 +7,10 @@ on:
   push:
     branches: [ main ]
 
+permissions:
+  contents: read
+  id-token: write 
+
 jobs:
   generate-crds:
     runs-on: ubuntu-latest
@@ -59,8 +63,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish to npm
+      - name: Publish to npm (Trusted Publishing)
         if: github.ref == 'refs/heads/main'
-        run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: npm publish --provenance
