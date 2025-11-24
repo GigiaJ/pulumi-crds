@@ -1,0 +1,63 @@
+name: Generate CRDs
+
+on:
+  workflow_dispatch:   # manual trigger
+  schedule:
+    - cron: "0 3 * * 1"  # run weekly
+  push:
+    branches: [ main ]
+
+jobs:
+  generate-crds:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install TypeScript
+        run: npm install -g typescript
+
+      - name: Fetch latest Gateway API release
+        run: |
+          GW_VERSION=$(curl -s https://api.github.com/repos/kubernetes-sigs/gateway-api/releases/latest | jq -r .tag_name)
+          echo "GW_VERSION=$GW_VERSION" >> $GITHUB_ENV
+
+      - name: Fetch latest Cert-Manager release
+        run: |
+          CM_VERSION=$(curl -s https://api.github.com/repos/cert-manager/cert-manager/releases/latest | jq -r .tag_name)
+          echo "CM_VERSION=$CM_VERSION" >> $GITHUB_ENV
+
+      - name: Download crd2pulumi binary
+        run: |
+          CRD2PULUMI_VERSION=v0.5.6   # pin the tool version you want
+          curl -L "https://github.com/pulumi/crd2pulumi/releases/download/${CRD2PULUMI_VERSION}/crd2pulumi-${CRD2PULUMI_VERSION}-linux-amd64.tar.gz" \
+            -o crd2pulumi.tar.gz
+          tar -xzf crd2pulumi.tar.gz
+          sudo mv crd2pulumi /usr/local/bin/crd2pulumi
+          crd2pulumi --version
+
+      - name: Run CRD generation script
+        run: node scripts/generate-crds.js
+
+      - name: Commit changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add generated/crds .crd2pulumi-checksum
+          git commit -m "Update CRDs" || echo "No changes to commit"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish to npm
+        if: github.ref == 'refs/heads/main'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
