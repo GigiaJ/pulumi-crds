@@ -1,6 +1,6 @@
 {
   "name": "pulumi-extra-crds",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "Apache-2.0",
   "scripts": {
     "generate": "node scripts/generate-crds.js",
@@ -8,10 +8,11 @@
   },
   "dependencies": {
     "@pulumi/kubernetes": "^4.23.0",
-    "@pulumi/pulumi": "^3.113.0"
+    "@pulumi/pulumi": "^3.113.0",
+    "pulumi-extra-crds": "^1.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
   }
 }
