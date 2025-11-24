@@ -1,19 +1,17 @@
 name: Generate CRDs
 
 on:
-  workflow_dispatch: 
+  workflow_dispatch:
   schedule:
-    - cron: "0 3 * * 1" 
+    - cron: "0 3 * * 1"
   push:
     branches: [ main ]
-
-permissions:
-  contents: write
-  id-token: write 
 
 jobs:
   generate-crds:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout repo
@@ -24,14 +22,12 @@ jobs:
         with:
           node-version: '20'
 
-
       - name: Install TypeScript
         run: npm install -g typescript
         
       - name: Install dependencies
         run: npm install
  
-
       - name: Fetch latest Gateway API release
         run: |
           GW_VERSION=$(curl -s https://api.github.com/repos/kubernetes-sigs/gateway-api/releases/latest | jq -r .tag_name)
@@ -54,16 +50,23 @@ jobs:
       - name: Run CRD generation script
         run: node generate-crds.js
 
-      - name: Commit changes
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --exit-code || echo "changes=true" >> $GITHUB_OUTPUT
+
+      - name: Bump Version and Push
+        if: steps.git-check.outputs.changes == 'true'
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add generated/crds .crd2pulumi-checksum
-          git commit -m "Update CRDs" || echo "No changes to commit"
+          
+          # Bump patch version (e.g., 1.0.0 -> 1.0.1) without creating a git tag yet
+          npm version patch --no-git-tag-version
+          
+          # Stage all changes including the new package.json
+          git add .
+          
+          # Commit and Push
+          git commit -m "Update CRDs and bump version"
           git push
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Publish to npm (Trusted Publishing)
-        if: github.ref == 'refs/heads/main'
-        run: npm publish --provenance  --access public
