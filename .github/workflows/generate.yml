@@ -43,7 +43,7 @@ jobs:
           crd2pulumi version
 
       - name: Run CRD generation script
-        run: node scripts/generate-crds.js
+        run: node generate-crds.js
 
       - name: Commit changes
         run: |
