@@ -1,7 +1,11 @@
 {
   "name": "pulumi-extra-crds",
-  "version": "1.0.10",
+  "version": "1.0.12",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GigiaJ/pulumi-crds.git"
+  },
   "scripts": {
     "generate": "node scripts/generate-crds.js",
     "build": "tsc -p tsconfig.json"

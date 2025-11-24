@@ -26,6 +26,8 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       # Force latest NPM to support OIDC correctly
+      # https://github.com/orgs/community/discussions/173102
+      # Seriously, what the fuck Github.
       - name: Update NPM
         run: npm install -g npm@latest
 
