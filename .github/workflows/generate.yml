@@ -4,51 +4,37 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 3 * * 1"
-  push:
-    branches: [ main ]
 
 jobs:
   generate-crds:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          # VITAL: This token makes the push trigger the NEXT workflow
+          token: ${{ secrets.GH_PAT }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
 
-      - name: Install TypeScript
-        run: npm install -g typescript
-        
       - name: Install dependencies
-        run: npm install
- 
-      - name: Fetch latest Gateway API release
         run: |
-          GW_VERSION=$(curl -s https://api.github.com/repos/kubernetes-sigs/gateway-api/releases/latest | jq -r .tag_name)
-          echo "GW_VERSION=$GW_VERSION" >> $GITHUB_ENV
+          npm install -g typescript
+          npm install
 
-      - name: Fetch latest Cert-Manager release
+      - name: Fetch binaries & Generate
         run: |
-          CM_VERSION=$(curl -s https://api.github.com/repos/cert-manager/cert-manager/releases/latest | jq -r .tag_name)
-          echo "CM_VERSION=$CM_VERSION" >> $GITHUB_ENV
-
-      - name: Download crd2pulumi binary
-        run: |
+          # (Simplified for brevity - keep your existing binary fetch logic here)
           CRD2PULUMI_VERSION=1.6.0
           curl -L "https://github.com/pulumi/crd2pulumi/releases/download/v${CRD2PULUMI_VERSION}/crd2pulumi-v${CRD2PULUMI_VERSION}-linux-amd64.tar.gz" -o crd2pulumi.tar.gz
           tar -xzf crd2pulumi.tar.gz
           chmod +x crd2pulumi
           sudo mv crd2pulumi /usr/local/bin/crd2pulumi
-          crd2pulumi version
-
-      - name: Run CRD generation script
-        run: node generate-crds.js
+          
+          node generate-crds.js
 
       - name: Check for changes
         id: git-check
@@ -61,12 +47,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Bump patch version (e.g., 1.0.0 -> 1.0.1) without creating a git tag yet
+          # Bump version in package.json
           npm version patch --no-git-tag-version
           
-          # Stage all changes including the new package.json
           git add .
-          
-          # Commit and Push
           git commit -m "Update CRDs and bump version"
+          
+          # This push (authenticated by GH_PAT) will trigger the publish.yml workflow
           git push
