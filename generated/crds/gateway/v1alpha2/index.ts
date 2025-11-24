@@ -5,6 +5,51 @@ import * as pulumi from "@pulumi/pulumi";
 import * as utilities from "../../utilities";
 
 // Export members:
+export { BackendLBPolicyArgs } from "./backendLBPolicy";
+export type BackendLBPolicy = import("./backendLBPolicy").BackendLBPolicy;
+export const BackendLBPolicy: typeof import("./backendLBPolicy").BackendLBPolicy = null as any;
+utilities.lazyLoad(exports, ["BackendLBPolicy"], () => require("./backendLBPolicy"));
+
+export { BackendLBPolicyListArgs } from "./backendLBPolicyList";
+export type BackendLBPolicyList = import("./backendLBPolicyList").BackendLBPolicyList;
+export const BackendLBPolicyList: typeof import("./backendLBPolicyList").BackendLBPolicyList = null as any;
+utilities.lazyLoad(exports, ["BackendLBPolicyList"], () => require("./backendLBPolicyList"));
+
+export { BackendLBPolicyPatchArgs } from "./backendLBPolicyPatch";
+export type BackendLBPolicyPatch = import("./backendLBPolicyPatch").BackendLBPolicyPatch;
+export const BackendLBPolicyPatch: typeof import("./backendLBPolicyPatch").BackendLBPolicyPatch = null as any;
+utilities.lazyLoad(exports, ["BackendLBPolicyPatch"], () => require("./backendLBPolicyPatch"));
+
+export { GRPCRouteArgs } from "./grpcroute";
+export type GRPCRoute = import("./grpcroute").GRPCRoute;
+export const GRPCRoute: typeof import("./grpcroute").GRPCRoute = null as any;
+utilities.lazyLoad(exports, ["GRPCRoute"], () => require("./grpcroute"));
+
+export { GRPCRouteListArgs } from "./grpcrouteList";
+export type GRPCRouteList = import("./grpcrouteList").GRPCRouteList;
+export const GRPCRouteList: typeof import("./grpcrouteList").GRPCRouteList = null as any;
+utilities.lazyLoad(exports, ["GRPCRouteList"], () => require("./grpcrouteList"));
+
+export { GRPCRoutePatchArgs } from "./grpcroutePatch";
+export type GRPCRoutePatch = import("./grpcroutePatch").GRPCRoutePatch;
+export const GRPCRoutePatch: typeof import("./grpcroutePatch").GRPCRoutePatch = null as any;
+utilities.lazyLoad(exports, ["GRPCRoutePatch"], () => require("./grpcroutePatch"));
+
+export { ReferenceGrantArgs } from "./referenceGrant";
+export type ReferenceGrant = import("./referenceGrant").ReferenceGrant;
+export const ReferenceGrant: typeof import("./referenceGrant").ReferenceGrant = null as any;
+utilities.lazyLoad(exports, ["ReferenceGrant"], () => require("./referenceGrant"));
+
+export { ReferenceGrantListArgs } from "./referenceGrantList";
+export type ReferenceGrantList = import("./referenceGrantList").ReferenceGrantList;
+export const ReferenceGrantList: typeof import("./referenceGrantList").ReferenceGrantList = null as any;
+utilities.lazyLoad(exports, ["ReferenceGrantList"], () => require("./referenceGrantList"));
+
+export { ReferenceGrantPatchArgs } from "./referenceGrantPatch";
+export type ReferenceGrantPatch = import("./referenceGrantPatch").ReferenceGrantPatch;
+export const ReferenceGrantPatch: typeof import("./referenceGrantPatch").ReferenceGrantPatch = null as any;
+utilities.lazyLoad(exports, ["ReferenceGrantPatch"], () => require("./referenceGrantPatch"));
+
 export { TCPRouteArgs } from "./tcproute";
 export type TCPRoute = import("./tcproute").TCPRoute;
 export const TCPRoute: typeof import("./tcproute").TCPRoute = null as any;
@@ -55,6 +100,24 @@ const _module = {
     version: utilities.getVersion(),
     construct: (name: string, type: string, urn: string): pulumi.Resource => {
         switch (type) {
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:BackendLBPolicy":
+                return new BackendLBPolicy(name, <any>undefined, { urn })
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:BackendLBPolicyList":
+                return new BackendLBPolicyList(name, <any>undefined, { urn })
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:BackendLBPolicyPatch":
+                return new BackendLBPolicyPatch(name, <any>undefined, { urn })
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:GRPCRoute":
+                return new GRPCRoute(name, <any>undefined, { urn })
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:GRPCRouteList":
+                return new GRPCRouteList(name, <any>undefined, { urn })
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:GRPCRoutePatch":
+                return new GRPCRoutePatch(name, <any>undefined, { urn })
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:ReferenceGrant":
+                return new ReferenceGrant(name, <any>undefined, { urn })
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:ReferenceGrantList":
+                return new ReferenceGrantList(name, <any>undefined, { urn })
+            case "kubernetes:gateway.networking.k8s.io/v1alpha2:ReferenceGrantPatch":
+                return new ReferenceGrantPatch(name, <any>undefined, { urn })
             case "kubernetes:gateway.networking.k8s.io/v1alpha2:TCPRoute":
                 return new TCPRoute(name, <any>undefined, { urn })
             case "kubernetes:gateway.networking.k8s.io/v1alpha2:TCPRouteList":

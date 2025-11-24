@@ -86,8 +86,6 @@ export class TLSRoutePatch extends pulumi.CustomResource {
             resourceInputs["status"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
-        const aliasOpts = { aliases: [{ type: "kubernetes:gateway.networking.k8s.io/v1alpha3:TLSRoutePatch" }] };
-        opts = pulumi.mergeOptions(opts, aliasOpts);
         super(TLSRoutePatch.__pulumiType, name, resourceInputs, opts);
     }
 }

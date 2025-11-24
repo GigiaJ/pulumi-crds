@@ -101,6 +101,8 @@ export class GRPCRoute extends pulumi.CustomResource {
             resourceInputs["status"] = undefined /*out*/;
         }
         opts = pulumi.mergeOptions(utilities.resourceOptsDefaults(), opts);
+        const aliasOpts = { aliases: [{ type: "kubernetes:gateway.networking.k8s.io/v1alpha2:GRPCRoute" }] };
+        opts = pulumi.mergeOptions(opts, aliasOpts);
         super(GRPCRoute.__pulumiType, name, resourceInputs, opts);
     }
 }
