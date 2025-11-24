@@ -1,0 +1,17 @@
+{
+  "name": "pulumi-crds",
+  "version": "1.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "scripts": {
+    "generate": "node scripts/generate-crds.js",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@pulumi/pulumi": "^3.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0"
+  }
+}
