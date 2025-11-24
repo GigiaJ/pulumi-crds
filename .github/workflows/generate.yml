@@ -23,6 +23,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
 
       - name: Install TypeScript
         run: npm install -g typescript
@@ -65,4 +67,4 @@ jobs:
 
       - name: Publish to npm (Trusted Publishing)
         if: github.ref == 'refs/heads/main'
-        run: npm publish --provenance
+        run: npm publish --provenance  --access public
