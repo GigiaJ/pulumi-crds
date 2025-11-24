@@ -40,7 +40,7 @@ jobs:
           tar -xzf crd2pulumi.tar.gz
           chmod +x crd2pulumi
           sudo mv crd2pulumi /usr/local/bin/crd2pulumi
-          crd2pulumi --version
+          crd2pulumi version
 
       - name: Run CRD generation script
         run: node scripts/generate-crds.js
