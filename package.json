@@ -1,6 +1,6 @@
 {
   "name": "pulumi-extra-crds",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "license": "Apache-2.0",
   "scripts": {
     "generate": "node scripts/generate-crds.js",
