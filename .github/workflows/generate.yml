@@ -35,12 +35,12 @@ jobs:
 
       - name: Download crd2pulumi binary
         run: |
-          CRD2PULUMI_VERSION=v0.5.6   # pin the tool version you want
-          curl -L "https://github.com/pulumi/crd2pulumi/releases/download/${CRD2PULUMI_VERSION}/crd2pulumi-${CRD2PULUMI_VERSION}-linux-amd64.tar.gz" \
-            -o crd2pulumi.tar.gz
-          tar -xzf crd2pulumi.tar.gz
+          CRD2PULUMI_VERSION=v0.5.6
+          curl -L "https://github.com/pulumi/crd2pulumi/releases/download/${CRD2PULUMI_VERSION}/crd2pulumi-${CRD2PULUMI_VERSION}-linux-amd64" -o crd2pulumi
+          chmod +x crd2pulumi
           sudo mv crd2pulumi /usr/local/bin/crd2pulumi
           crd2pulumi --version
+
 
       - name: Run CRD generation script
         run: node scripts/generate-crds.js
